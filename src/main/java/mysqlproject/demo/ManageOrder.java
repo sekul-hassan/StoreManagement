@@ -25,30 +25,29 @@ public final class ManageOrder extends javax.swing.JFrame {
     private Connection con;
     private PreparedStatement st;
     private ResultSet rs;
-    
-    
+
     public ManageOrder() {
         initComponents();
         table_loaded();
     }
-    
-    void table_loaded(){
+
+    void table_loaded() {
         try {
             Connect cn = new Connect();
             con = cn.getConnection();
             st = con.prepareStatement("select * from orderdetails");
             rs = st.executeQuery();
-            ResultSetMetaData rsmd = rs.getMetaData() ;
+            ResultSetMetaData rsmd = rs.getMetaData();
             DefaultTableModel model = (DefaultTableModel) OrderDetails.getModel();
             int cols = rsmd.getColumnCount();
             String[] colName = new String[cols];
-            for(int i=0;i<cols;i++){
-                colName[i]=rsmd.getColumnName(i+1);
+            for (int i = 0; i < cols; i++) {
+                colName[i] = rsmd.getColumnName(i + 1);
             }
             model.setColumnIdentifiers(colName);
-          
-            String pname,id,pid,pprize,pdes,tprise,tpro;
-            while(rs.next()){
+
+            String pname, id, pid, pprize, pdes, tprise, tpro;
+            while (rs.next()) {
                 id = rs.getString(1);
                 pname = rs.getString(2);
                 pid = rs.getString(3);
@@ -56,15 +55,14 @@ public final class ManageOrder extends javax.swing.JFrame {
                 pdes = rs.getString(5);
                 tprise = rs.getString(6);
                 tpro = rs.getString(7);
-                String[] row = {id,pname,pid,pprize,pdes,tprise,tpro};
+                String[] row = {id, pname, pid, pprize, pdes, tprise, tpro};
                 model.addRow(row);
             }
         } catch (SQLException ex) {
             Logger.getLogger(ShowElectronics.class.getName()).log(Level.SEVERE, null, ex);
         }
-    
+
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.

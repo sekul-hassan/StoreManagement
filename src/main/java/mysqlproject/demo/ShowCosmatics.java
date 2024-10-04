@@ -23,14 +23,14 @@ public final class ShowCosmatics extends javax.swing.JFrame {
     /**
      * Creates new form ShowCosmatics
      */
-    
     private Connection con;
     private PreparedStatement st;
     private ResultSet rs;
     int total = 0;
     int prise = 0;
-    int r=0;
-    String Name = "",Email = "",Product = "",PID = "",PRISE = "";
+    int r = 0;
+    String Name = "", Email = "", Product = "", PID = "", PRISE = "";
+
     public ShowCosmatics() {
         initComponents();
         table_loaded();
@@ -274,37 +274,36 @@ public final class ShowCosmatics extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-     void table_loaded(){
+    void table_loaded() {
         try {
             Connect cn = new Connect();
             con = cn.getConnection();
             st = con.prepareStatement("select * from cosmatics");
             rs = st.executeQuery();
-            ResultSetMetaData rsmd = rs.getMetaData() ;
+            ResultSetMetaData rsmd = rs.getMetaData();
             DefaultTableModel model = (DefaultTableModel) cosmatics.getModel();
             int cols = rsmd.getColumnCount();
             String[] colName = new String[cols];
-            for(int i=0;i<cols;i++){
-                colName[i]=rsmd.getColumnName(i+1);
+            for (int i = 0; i < cols; i++) {
+                colName[i] = rsmd.getColumnName(i + 1);
             }
             model.setColumnIdentifiers(colName);
-          
-            String pname,id,pid,pprize,pdes;
-            while(rs.next()){
+
+            String pname, id, pid, pprize, pdes;
+            while (rs.next()) {
                 id = rs.getString(1);
                 pname = rs.getString(2);
                 pid = rs.getString(3);
                 pprize = rs.getString(4);
                 pdes = rs.getString(5);
-                String[] row = {id,pname,pid,pprize,pdes};
+                String[] row = {id, pname, pid, pprize, pdes};
                 model.addRow(row);
             }
         } catch (SQLException ex) {
             Logger.getLogger(ShowElectronics.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
+
     private void orderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderActionPerformed
         try {
             // TODO add your handling code here:
@@ -315,25 +314,24 @@ public final class ShowCosmatics extends javax.swing.JFrame {
             st = con.prepareStatement(sql);
             st.setString(1, fid);
             rs = st.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 Name = Session.NAME;
                 Email = Session.EMAIL;
                 String Pname = rs.getString(2);
-                Product+=Pname;
-                Product+=",";
+                Product += Pname;
+                Product += ",";
                 String Pid = fid;
-                PID+=Pid;
-                PID+=",";
+                PID += Pid;
+                PID += ",";
                 String Pprise = rs.getString(4);
-                prise+=Prise(Pprise);
-                PRISE = prise+"$";
+                prise += Prise(Pprise);
+                PRISE = prise + "$";
                 total++;
-                JOptionPane.showMessageDialog(null,"Product Add your Cart");
+                JOptionPane.showMessageDialog(null, "Product Add your Cart");
                 pid.setText("");
 
-            }
-            else{
-                JOptionPane.showMessageDialog(null,"Product id Not found");
+            } else {
+                JOptionPane.showMessageDialog(null, "Product id Not found");
             }
 
         } catch (SQLException ex) {
@@ -341,61 +339,58 @@ public final class ShowCosmatics extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_orderActionPerformed
 
-    int Prise(String p){
+    int Prise(String p) {
         int l = p.length();
-        String s = p.substring(0,l-1);
-        int ans= Integer.parseInt(s);
-        
+        String s = p.substring(0, l - 1);
+        int ans = Integer.parseInt(s);
+
         return ans;
     }
-    
+
     private void showActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showActionPerformed
         // TODO add your handling code here:
-        if(total==0){
+        if (total == 0) {
             JOptionPane.showMessageDialog(null, "You have not any selected Id");
-        }
-        else{
+        } else {
             JOptionPane.showMessageDialog(null,
-                "Name is : "+Name+
-                "\nEmail is : "+Email+
-                "\nProduct name is : "+Product+
-                "\nProduct id is : "+PID+
-                "\nYour Total Element is : "+total+
-                "\nYour total amount is : "+PRISE,"Order",JOptionPane.INFORMATION_MESSAGE);
+                    "Name is : " + Name
+                    + "\nEmail is : " + Email
+                    + "\nProduct name is : " + Product
+                    + "\nProduct id is : " + PID
+                    + "\nYour Total Element is : " + total
+                    + "\nYour total amount is : " + PRISE, "Order", JOptionPane.INFORMATION_MESSAGE);
         }
 
     }//GEN-LAST:event_showActionPerformed
 
     private void ConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmActionPerformed
         // TODO add your handling code here:
-        r = JOptionPane.showConfirmDialog(null, "Please Confirm", "Confirm Message",r);
-        if(r==0){
+        r = JOptionPane.showConfirmDialog(null, "Please Confirm", "Confirm Message", r);
+        if (r == 0) {
 
-            if(!"".equals(Name) && !"".equals(Email) && !"".equals(Product) && !"".equals(PID) && !"".equals(PRISE) && total!=0){
+            if (!"".equals(Name) && !"".equals(Email) && !"".equals(Product) && !"".equals(PID) && !"".equals(PRISE) && total != 0) {
                 try {
                     String q = "insert into orderdetails(person_name,person_email,product_name,product_id,total_price,total_products) values(?,?,?,?,?,?)";
                     Connect cn = new Connect();
                     con = cn.getConnection();
                     st = con.prepareStatement(q);
-                    st.setString(1,Name);
-                    st.setString(2,Email);
-                    st.setString(3,Product); /// String Name,Email,Product,PID,PRISE,total;
-                    st.setString(4,PID);
-                    st.setString(5,PRISE);
-                    st.setInt(6,total);
+                    st.setString(1, Name);
+                    st.setString(2, Email);
+                    st.setString(3, Product); /// String Name,Email,Product,PID,PRISE,total;
+                    st.setString(4, PID);
+                    st.setString(5, PRISE);
+                    st.setInt(6, total);
                     st.executeUpdate();
 
-                    JOptionPane.showMessageDialog(null,"Order Successfully Done! ");
+                    JOptionPane.showMessageDialog(null, "Order Successfully Done! ");
                 } catch (SQLException ex) {
                     Logger.getLogger(ShowElectronics.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }
-            else{
-                JOptionPane.showMessageDialog(null,"First Add to Cart!");
+            } else {
+                JOptionPane.showMessageDialog(null, "First Add to Cart!");
             }
 
-        }
-        else{
+        } else {
             JOptionPane.showMessageDialog(null, "Order Not Complete!!");
         }
 

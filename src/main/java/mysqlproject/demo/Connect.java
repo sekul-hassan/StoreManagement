@@ -15,18 +15,20 @@ import java.util.logging.Logger;
  * @author ASUS
  */
 public class Connect {
+
     private Connection con;
     private final String url = "jdbc:mysql://localhost:3306/storemanagement";
     private final String userName = "root";
     private final String userPass = "";
-    public Connection getConnection(){
+
+    public Connection getConnection() {
         try {
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(Connect.class.getName()).log(Level.SEVERE, null, ex);
             }
-            con = DriverManager.getConnection(url,userName,userPass);
+            con = DriverManager.getConnection(url, userName, userPass);
             return con;
         } catch (SQLException ex) {
             Logger.getLogger(Connect.class.getName()).log(Level.SEVERE, null, ex);

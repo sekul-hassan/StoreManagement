@@ -18,11 +18,11 @@ public class User extends javax.swing.JFrame {
     /**
      * Creates new form User
      */
-    
     private Connection con;
     private PreparedStatement st;
     private ResultSet rs;
     public String rName;
+
     public User() {
         initComponents();
     }
@@ -214,7 +214,7 @@ public class User extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public String retName(){
+    public String retName() {
         return rName;
     }
     private void unameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unameActionPerformed
@@ -228,27 +228,26 @@ public class User extends javax.swing.JFrame {
 
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
         try {
-            String lname="",lpass="";
+            String lname = "", lpass = "";
             lname = ulname.getText();
             lpass = ulpass.getText();
             Connect cn = new Connect();
             con = cn.getConnection();
             String sql = "select * from user where name=? and pass=?";
             st = con.prepareStatement(sql);
-            st.setString(1,lname);
+            st.setString(1, lname);
             st.setString(2, lpass);
             rs = st.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 Session.NAME = rs.getString(2);
                 Session.EMAIL = rs.getString(3);
                 ShowCatagory ct = new ShowCatagory();
                 ct.setVisible(true);
                 setVisible(false);
+            } else {
+                JOptionPane.showMessageDialog(null, "User name and password not matched");
             }
-            else{
-                JOptionPane.showMessageDialog(null,"User name and password not matched");
-            }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -256,11 +255,11 @@ public class User extends javax.swing.JFrame {
 
     private void registerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerActionPerformed
         // TODO add your handling code here:
-        String name,email,pass;
+        String name, email, pass;
         name = uname.getText();
         email = uemail.getText();
         pass = upass.getText();
-        if(!"".equals(name) && !"".equals(email) && !"".equals(pass)){
+        if (!"".equals(name) && !"".equals(email) && !"".equals(pass)) {
             try {
                 Connect cn = new Connect();
                 con = cn.getConnection();
@@ -270,16 +269,15 @@ public class User extends javax.swing.JFrame {
                 st.setString(2, email);
                 st.setString(3, pass);
                 st.executeUpdate();
-                JOptionPane.showMessageDialog(null,"Registration Successfully Done!!");
+                JOptionPane.showMessageDialog(null, "Registration Successfully Done!!");
                 uname.setText("");
                 uemail.setText("");
                 upass.setText("");
             } catch (SQLException ex) {
                 Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
             }
-         }
-        else{
-            JOptionPane.showMessageDialog(null,"All fiels are required!");
+        } else {
+            JOptionPane.showMessageDialog(null, "All fiels are required!");
         }
     }//GEN-LAST:event_registerActionPerformed
 

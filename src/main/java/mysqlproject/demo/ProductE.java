@@ -21,11 +21,12 @@ public class ProductE extends javax.swing.JFrame {
     /**
      * Creates new form Product
      */
-    String fname,fid,fprice,fdes;
+    String fname, fid, fprice, fdes;
     private Connection con;
     private PreparedStatement st;
     private ResultSet rs;
     Connect cn = new Connect();
+
     public ProductE() {
         initComponents();
     }
@@ -377,84 +378,104 @@ public class ProductE extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void search(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search
-      try {
+        try {
             String sid = sfield.getText();
             con = cn.getConnection();
             st = con.prepareStatement("select * from electronics where pid=?");
             st.setString(1, sid);
             rs = st.executeQuery();
-            if(rs.next()){
-               fname = rs.getString("pname");
-               fid = rs.getString("pid");
-               fprice = rs.getString("pprize");
-               fdes = rs.getString("pdes");
-               pname.setText(fname);
-               pid.setText(fid);
-               pprice.setText(fprice);
-               pdes.setText(fdes);
+            if (rs.next()) {
+                fname = rs.getString("pname");
+                fid = rs.getString("pid");
+                fprice = rs.getString("pprize");
+                fdes = rs.getString("pdes");
+                pname.setText(fname);
+                pid.setText(fid);
+                pprice.setText(fprice);
+                pdes.setText(fdes);
+            } else {
+                JOptionPane.showMessageDialog(null, "No Product");
             }
-            else{
-                JOptionPane.showMessageDialog(null,"No Product");
-            }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(ProductE.class.getName()).log(Level.SEVERE, null, ex);
-        }   
+        }
     }//GEN-LAST:event_search
 
     private void delete(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delete
         String sid = sfield.getText();
         String did = pid.getText();
-        if(sid.equals(did) && !"".equals(sid)){
+        if (sid.equals(did) && !"".equals(sid)) {
             try {
-            // TODO add your handling code here
-            String sql = "DELETE FROM electronics WHERE pid=?";
-            con = cn.getConnection();
-            st = con.prepareStatement(sql);
-            st.setString(1, sid);
-            st.executeUpdate();
-            pname.setText("");
-            pid.setText("");
-            pprice.setText("");
-            pdes.setText("");
-            JOptionPane.showMessageDialog(null,"Racord successfully delete");
-            } catch (SQLException ex) {
-                Logger.getLogger(ProductE.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        else{
-            JOptionPane.showMessageDialog(null,"No selected id");
-        }
-    }//GEN-LAST:event_delete
-
-    private void add(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add
-        // TODO add your handling code here:
-        fname = pname.getText();
-        fid = pid.getText();
-        fprice = pprice.getText();
-        fdes = pdes.getText();
-        if(!"".equals(fid) && !"".equals(fprice) && !"".equals(fname) && !"".equals(fdes)){
-            try {
+                // TODO add your handling code here
+                String sql = "DELETE FROM electronics WHERE pid=?";
                 con = cn.getConnection();
-                st = con.prepareStatement("insert into electronics(pname,pid,pprize,pdes) values(?,?,?,?)");
-                st.setString(1, fname);
-                st.setString(2, fid);
-                st.setString(3, fprice);
-                st.setString(4, fdes);
+                st = con.prepareStatement(sql);
+                st.setString(1, sid);
                 st.executeUpdate();
-                JOptionPane.showMessageDialog(null,"Record Add Successfully done");
                 pname.setText("");
                 pid.setText("");
                 pprice.setText("");
                 pdes.setText("");
+                JOptionPane.showMessageDialog(null, "Racord successfully delete");
             } catch (SQLException ex) {
                 Logger.getLogger(ProductE.class.getName()).log(Level.SEVERE, null, ex);
-            }    
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No selected id");
         }
-        else{
-            JOptionPane.showMessageDialog(null,"All fields are required");
+    }//GEN-LAST:event_delete
+
+ private void add(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add
+    // Retrieve values from input fields
+    fname = pname.getText();
+    fid = pid.getText();
+    fprice = pprice.getText();
+    fdes = pdes.getText();
+    
+    // Check if all fields are filled
+    if (!"".equals(fid) && !"".equals(fprice) && !"".equals(fname) && !"".equals(fdes)) {
+        try {
+            // Validate that fprice is a valid number
+            double price = Double.parseDouble(fprice);
+
+            // Establish database connection
+            con = cn.getConnection();
+            st = con.prepareStatement("INSERT INTO electronics(pname, pid, pprize, pdes) VALUES (?, ?, ?, ?)");
+            st.setString(1, fname);
+            st.setString(2, fid);
+            st.setDouble(3, price); // Set price as a double
+            st.setString(4, fdes);
+            st.executeUpdate();
+
+            // Show success message
+            JOptionPane.showMessageDialog(null, "Record added successfully.");
+            // Clear input fields
+            pname.setText("");
+            pid.setText("");
+            pprice.setText("");
+            pdes.setText("");
+        } catch (NumberFormatException e) {
+            // Handle invalid price input
+            JOptionPane.showMessageDialog(null, "Please insert a valid number for the price.");
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductE.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error adding product: " + ex.getMessage());
+        } finally {
+            // Close resources if necessary
+            try {
+                if (st != null) st.close();
+                if (con != null) con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ProductE.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-    }//GEN-LAST:event_add
+    } else {
+        // Show message if any fields are empty
+        JOptionPane.showMessageDialog(null, "All fields are required.");
+    }
+}//GEN-LAST:event_add
+
 
     private void update(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_update
         String sid = sfield.getText();
@@ -462,38 +483,36 @@ public class ProductE extends javax.swing.JFrame {
         fname = pname.getText();
         fprice = pprice.getText();
         fdes = pdes.getText();
-        if(!"".equals(sid) && !"".equals(fname) && !"".equals(fid) && !"".equals(fprice) && !"".equals(fdes)){
+        if (!"".equals(sid) && !"".equals(fname) && !"".equals(fid) && !"".equals(fprice) && !"".equals(fdes)) {
             try {
-            // TODO add your handling code here
-            String sql = "update electronics set pname=?,pid=?,pprize=?,pdes=? WHERE pid=?";
-            con = cn.getConnection();
-            st = con.prepareStatement(sql);
-            st.setString(1, fname);
-            st.setString(2, fid);
-            st.setString(3, fprice);
-            st.setString(4, fdes);
-            st.setString(5, sid);
-            st.executeUpdate();
-            
-            pname.setText("");
-            pid.setText("");
-            pprice.setText("");
-            pdes.setText("");
-            sfield.setText("");
-            JOptionPane.showMessageDialog(null,"Racord successfully Updated");
+                // TODO add your handling code here
+                String sql = "update electronics set pname=?,pid=?,pprize=?,pdes=? WHERE pid=?";
+                con = cn.getConnection();
+                st = con.prepareStatement(sql);
+                st.setString(1, fname);
+                st.setString(2, fid);
+                st.setString(3, fprice);
+                st.setString(4, fdes);
+                st.setString(5, sid);
+                st.executeUpdate();
+
+                pname.setText("");
+                pid.setText("");
+                pprice.setText("");
+                pdes.setText("");
+                sfield.setText("");
+                JOptionPane.showMessageDialog(null, "Racord successfully Updated");
             } catch (SQLException ex) {
                 Logger.getLogger(ProductE.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-        else{
-            JOptionPane.showMessageDialog(null,"No selected id");
+        } else {
+            JOptionPane.showMessageDialog(null, "No selected id");
         }
     }//GEN-LAST:event_update
 
     private void pname(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pname
         // TODO add your handling code here:
-        
-        
+
     }//GEN-LAST:event_pname
 
     private void pid(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pid
@@ -505,7 +524,7 @@ public class ProductE extends javax.swing.JFrame {
     }//GEN-LAST:event_pprice
 
     private void sfield(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sfield
-        
+
     }//GEN-LAST:event_sfield
 
     private void erase(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_erase

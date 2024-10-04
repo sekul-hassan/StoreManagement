@@ -1,5 +1,7 @@
 package mysqlproject.demo;
+
 public class Catagory extends javax.swing.JFrame {
+
     public Catagory() {
         initComponents();
     }
@@ -203,7 +205,7 @@ public class Catagory extends javax.swing.JFrame {
     }//GEN-LAST:event_ElectronicsActionPerformed
 
     private void CosmaticsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CosmaticsActionPerformed
-         ProductC pd = new ProductC();
+        ProductC pd = new ProductC();
         pd.setVisible(true);
         setVisible(false);
     }//GEN-LAST:event_CosmaticsActionPerformed

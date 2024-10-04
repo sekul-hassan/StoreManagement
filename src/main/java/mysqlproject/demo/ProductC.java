@@ -21,13 +21,12 @@ public class ProductC extends javax.swing.JFrame {
     /**
      * Creates new form ProductC
      */
-    
-    String fname,fid,fprice,fdes;
+    String fname, fid, fprice, fdes;
     private Connection con;
     private PreparedStatement st;
     private ResultSet rs;
     Connect cn = new Connect();
-    
+
     public ProductC() {
         initComponents();
     }
@@ -355,86 +354,103 @@ public class ProductC extends javax.swing.JFrame {
         fname = pname.getText();
         fprice = pprice.getText();
         fdes = pdes.getText();
-        if(!"".equals(sid) && !"".equals(fname) && !"".equals(fid) && !"".equals(fprice) && !"".equals(fdes)){
+        if (!"".equals(sid) && !"".equals(fname) && !"".equals(fid) && !"".equals(fprice) && !"".equals(fdes)) {
             try {
-            // TODO add your handling code here
-            String sql = "update cosmatics set pname=?,pid=?,pprize=?,pdes=? WHERE pid=?";
-            con = cn.getConnection();
-            st = con.prepareStatement(sql);
-            st.setString(1, fname);
-            st.setString(2, fid);
-            st.setString(3, fprice);
-            st.setString(4, fdes);
-            st.setString(5, sid);
-            st.executeUpdate();
-            
-            pname.setText("");
-            pid.setText("");
-            pprice.setText("");
-            pdes.setText("");
-            sfield.setText("");
-            JOptionPane.showMessageDialog(null,"Racord successfully Updated");
-            } catch (SQLException ex) {
-                Logger.getLogger(ProductE.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        else{
-            JOptionPane.showMessageDialog(null,"No selected id");
-        }
-    }//GEN-LAST:event_updateActionPerformed
-
-    private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
-        // TODO add your handling code here:
-        fname = pname.getText();
-        fid = pid.getText();
-        fprice = pprice.getText();
-        fdes = pdes.getText();
-        if(!"".equals(fid) && !"".equals(fprice) && !"".equals(fname) && !"".equals(fdes)){
-            try {
+                // TODO add your handling code here
+                String sql = "update cosmatics set pname=?,pid=?,pprize=?,pdes=? WHERE pid=?";
                 con = cn.getConnection();
-                st = con.prepareStatement("insert into cosmatics(pname,pid,pprize,pdes) values(?,?,?,?)");
+                st = con.prepareStatement(sql);
                 st.setString(1, fname);
                 st.setString(2, fid);
                 st.setString(3, fprice);
                 st.setString(4, fdes);
+                st.setString(5, sid);
                 st.executeUpdate();
-                JOptionPane.showMessageDialog(null,"Record Add Successfully done");
+
                 pname.setText("");
                 pid.setText("");
                 pprice.setText("");
                 pdes.setText("");
+                sfield.setText("");
+                JOptionPane.showMessageDialog(null, "Racord successfully Updated");
             } catch (SQLException ex) {
                 Logger.getLogger(ProductE.class.getName()).log(Level.SEVERE, null, ex);
-            }    
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No selected id");
         }
-        else{
-            JOptionPane.showMessageDialog(null,"All fields are required");
+    }//GEN-LAST:event_updateActionPerformed
+
+    private void addActionPerformed(java.awt.event.ActionEvent evt) {
+        fname = pname.getText();
+        fid = pid.getText();
+        fprice = pprice.getText();
+        fdes = pdes.getText();
+        
+        // Check if all fields are filled
+        if (!"".equals(fid) && !"".equals(fprice) && !"".equals(fname) && !"".equals(fdes)) {
+            try {
+                // Attempt to parse the price as a double
+                double price = Double.parseDouble(fprice);
+    
+                // Proceed to insert into the database
+                con = cn.getConnection();
+                st = con.prepareStatement("INSERT INTO cosmatics(pname, pid, pprize, pdes) VALUES (?, ?, ?, ?)");
+                st.setString(1, fname);
+                st.setString(2, fid);
+                st.setDouble(3, price); // Use setInt if price is INT
+                st.setString(4, fdes);
+                st.executeUpdate();
+    
+                JOptionPane.showMessageDialog(null, "Record added successfully.");
+                // Clear input fields
+                pname.setText("");
+                pid.setText("");
+                pprice.setText("");
+                pdes.setText("");
+            } catch (NumberFormatException e) {
+                // This will catch the case where parsing fails
+                JOptionPane.showMessageDialog(null, "Please insert a valid number for the price.");
+            } catch (SQLException ex) {
+                Logger.getLogger(ProductE.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Error adding product: " + ex.getMessage());
+            } finally {
+                // Close resources if necessary
+                try {
+                    if (st != null) st.close();
+                    if (con != null) con.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(ProductE.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "All fields are required.");
         }
-    }//GEN-LAST:event_addActionPerformed
+    }
+    
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
         // TODO add your handling code here:
         String sid = sfield.getText();
         String did = pid.getText();
-        if(sid.equals(did) && !"".equals(sid)){
+        if (sid.equals(did) && !"".equals(sid)) {
             try {
-            // TODO add your handling code here
-            String sql = "DELETE FROM cosmatics WHERE pid=?";
-            con = cn.getConnection();
-            st = con.prepareStatement(sql);
-            st.setString(1, sid);
-            st.executeUpdate();
-            pname.setText("");
-            pid.setText("");
-            pprice.setText("");
-            pdes.setText("");
-            JOptionPane.showMessageDialog(null,"Racord successfully delete");
+                // TODO add your handling code here
+                String sql = "DELETE FROM cosmatics WHERE pid=?";
+                con = cn.getConnection();
+                st = con.prepareStatement(sql);
+                st.setString(1, sid);
+                st.executeUpdate();
+                pname.setText("");
+                pid.setText("");
+                pprice.setText("");
+                pdes.setText("");
+                JOptionPane.showMessageDialog(null, "Racord successfully delete");
             } catch (SQLException ex) {
                 Logger.getLogger(ProductE.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-        else{
-            JOptionPane.showMessageDialog(null,"No selected id");
+        } else {
+            JOptionPane.showMessageDialog(null, "No selected id");
         }
     }//GEN-LAST:event_deleteActionPerformed
 
@@ -446,23 +462,22 @@ public class ProductC extends javax.swing.JFrame {
             st = con.prepareStatement("select * from cosmatics where pid=?");
             st.setString(1, sid);
             rs = st.executeQuery();
-            if(rs.next()){
-               fname = rs.getString("pname");
-               fid = rs.getString("pid");
-               fprice = rs.getString("pprize");
-               fdes = rs.getString("pdes");
-               pname.setText(fname);
-               pid.setText(fid);
-               pprice.setText(fprice);
-               pdes.setText(fdes);
+            if (rs.next()) {
+                fname = rs.getString("pname");
+                fid = rs.getString("pid");
+                fprice = rs.getString("pprize");
+                fdes = rs.getString("pdes");
+                pname.setText(fname);
+                pid.setText(fid);
+                pprice.setText(fprice);
+                pdes.setText(fdes);
+            } else {
+                JOptionPane.showMessageDialog(null, "No Product");
             }
-            else{
-                JOptionPane.showMessageDialog(null,"No Product");
-            }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(ProductE.class.getName()).log(Level.SEVERE, null, ex);
-        }   
+        }
     }//GEN-LAST:event_searchActionPerformed
 
     private void eraseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eraseActionPerformed

@@ -9,6 +9,7 @@ package mysqlproject.demo;
  * @author ASUS
  */
 public class Session {
-   public static String NAME; 
-   public static String EMAIL;
+
+    public static String NAME;
+    public static String EMAIL;
 }

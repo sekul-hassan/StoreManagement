@@ -17,19 +17,21 @@ import javax.swing.JOptionPane;
  * @author ASUS
  */
 public class Admin extends javax.swing.JFrame {
-    
-    private String fname="";
-    private String fpass="";
+
+    private String fname = "";
+    private String fpass = "";
     private Connection con;
     private PreparedStatement st;
     private String q = "select * from admin where name=? and pass=?";
     private ResultSet rs;
+
     /**
      * Creates new form Admin
      */
     public Admin() {
         initComponents();
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -161,19 +163,18 @@ public class Admin extends javax.swing.JFrame {
             con = cn.getConnection();
             st = con.prepareStatement("select * from admin where name=? and pass=?");
             //int nam = st.getFetchDirection();
-            st.setString(1,fname);
+            st.setString(1, fname);
             st.setString(2, fpass);
-            rs=st.executeQuery();
-            if(rs.next()){
+            rs = st.executeQuery();
+            if (rs.next()) {
                 Catagory ct = new Catagory();
                 ct.setVisible(true);
                 setVisible(false);
-            }
-            else{
-                JOptionPane.showMessageDialog(null,"User name or password not matched");
+            } else {
+                JOptionPane.showMessageDialog(null, "User name or password not matched");
                 jTextField3.setText("");
                 jTextField1.setText("");
-                
+
             }
         } catch (SQLException ex) {
             Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
@@ -182,12 +183,12 @@ public class Admin extends javax.swing.JFrame {
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_jTextField3ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
-       
+
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void LogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogoutActionPerformed
