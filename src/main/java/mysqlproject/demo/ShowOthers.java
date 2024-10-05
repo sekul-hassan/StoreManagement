@@ -321,8 +321,8 @@ public final class ShowOthers extends javax.swing.JFrame {
                 String Pid = fid;
                 PID += Pid;
                 PID += ",";
-                String Pprise = rs.getString(4);
-                prise += Prise(Pprise);
+                int Pprise = rs.getInt(4);
+                prise += Pprise;
                 PRISE = prise + "$";
                 total++;
                 JOptionPane.showMessageDialog(null, "Product Add your Cart");

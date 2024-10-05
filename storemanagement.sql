@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 10, 2023 at 09:12 AM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 8.2.0
+-- Generation Time: Oct 05, 2024 at 12:43 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -33,13 +33,6 @@ CREATE TABLE `admin` (
   `pass` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `admin`
---
-
-INSERT INTO `admin` (`id`, `name`, `pass`) VALUES
-(1, 'sekul', 'sekul');
-
 -- --------------------------------------------------------
 
 --
@@ -47,7 +40,8 @@ INSERT INTO `admin` (`id`, `name`, `pass`) VALUES
 --
 
 CREATE TABLE `cloths` (
-  `pid` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
+  `pid` varchar(222) NOT NULL,
   `pname` varchar(255) NOT NULL,
   `pprize` decimal(10,2) NOT NULL,
   `pdes` text DEFAULT NULL
@@ -56,11 +50,12 @@ CREATE TABLE `cloths` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `cosmetics`
+-- Table structure for table `cosmatics`
 --
 
-CREATE TABLE `cosmetics` (
-  `pid` int(11) NOT NULL,
+CREATE TABLE `cosmatics` (
+  `id` int(222) NOT NULL,
+  `pid` varchar(222) NOT NULL,
   `pname` varchar(255) NOT NULL,
   `pprize` decimal(10,2) NOT NULL,
   `pdes` text DEFAULT NULL
@@ -73,10 +68,27 @@ CREATE TABLE `cosmetics` (
 --
 
 CREATE TABLE `electronics` (
-  `pid` int(11) NOT NULL,
-  `pname` varchar(255) NOT NULL,
-  `pprize` decimal(10,2) NOT NULL,
-  `pdes` text DEFAULT NULL
+  `id` int(222) NOT NULL,
+  `pname` varchar(222) NOT NULL,
+  `pid` varchar(222) NOT NULL,
+  `pprize` varchar(222) NOT NULL,
+  `pdes` varchar(222) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `orderdetails`
+--
+
+CREATE TABLE `orderdetails` (
+  `id` int(222) NOT NULL,
+  `person_name` varchar(222) NOT NULL,
+  `person_email` varchar(222) NOT NULL,
+  `product_name` varchar(222) NOT NULL,
+  `total_price` varchar(222) NOT NULL,
+  `product_id` varchar(222) NOT NULL,
+  `total_products` varchar(222) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -86,10 +98,24 @@ CREATE TABLE `electronics` (
 --
 
 CREATE TABLE `others` (
-  `pid` int(11) NOT NULL,
+  `id` int(255) NOT NULL,
+  `pid` varchar(222) NOT NULL,
   `pname` varchar(255) NOT NULL,
   `pprize` decimal(10,2) NOT NULL,
   `pdes` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user`
+--
+
+CREATE TABLE `user` (
+  `id` int(222) NOT NULL,
+  `name` varchar(222) NOT NULL,
+  `email` varchar(222) NOT NULL,
+  `pass` varchar(222) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -106,25 +132,37 @@ ALTER TABLE `admin`
 -- Indexes for table `cloths`
 --
 ALTER TABLE `cloths`
-  ADD PRIMARY KEY (`pid`);
+  ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `cosmetics`
+-- Indexes for table `cosmatics`
 --
-ALTER TABLE `cosmetics`
-  ADD PRIMARY KEY (`pid`);
+ALTER TABLE `cosmatics`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `electronics`
 --
 ALTER TABLE `electronics`
-  ADD PRIMARY KEY (`pid`);
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `orderdetails`
+--
+ALTER TABLE `orderdetails`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `others`
 --
 ALTER TABLE `others`
-  ADD PRIMARY KEY (`pid`);
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -134,31 +172,43 @@ ALTER TABLE `others`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `cloths`
 --
 ALTER TABLE `cloths`
-  MODIFY `pid` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `cosmetics`
+-- AUTO_INCREMENT for table `cosmatics`
 --
-ALTER TABLE `cosmetics`
-  MODIFY `pid` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `cosmatics`
+  MODIFY `id` int(222) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `electronics`
 --
 ALTER TABLE `electronics`
-  MODIFY `pid` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(222) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `orderdetails`
+--
+ALTER TABLE `orderdetails`
+  MODIFY `id` int(222) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `others`
 --
 ALTER TABLE `others`
-  MODIFY `pid` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `user`
+--
+ALTER TABLE `user`
+  MODIFY `id` int(222) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

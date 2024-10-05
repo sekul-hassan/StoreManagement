@@ -324,8 +324,8 @@ public final class ShowElectronics extends javax.swing.JFrame {
                 String Pid = fid;
                 PID += Pid;
                 PID += ",";
-                String Pprise = rs.getString(4);
-                prise += Prise(Pprise);
+                int Pprise = rs.getInt(4);
+                prise += Pprise;
                 PRISE = prise + "$";
                 total++;
                 JOptionPane.showMessageDialog(null, "Product Add your Cart");
@@ -404,9 +404,9 @@ public final class ShowElectronics extends javax.swing.JFrame {
     }//GEN-LAST:event_LogoutActionPerformed
 
     int Prise(String p) {
-        int l = p.length();
-        String s = p.substring(0, l - 1);
-        int ans = Integer.parseInt(s);
+        // int l = p.length();
+        // String s = p.substring(0, l - 1);
+        int ans = Integer.parseInt(p);
 
         return ans;
     }
